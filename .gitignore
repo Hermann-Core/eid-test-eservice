@@ -24,3 +24,5 @@ dist-ssr
 
 .qodo
 gen
+.next
+.sessions

@@ -25,6 +25,13 @@ export default async function handler(
 
         console.log('eID-Client callback received for session:', session.sessionId);
         console.log('Result parameters:', { ResultMajor, ResultMinor });
+
+        // Save the client result to the session
+        await sessionManager.updateSessionWithClientResult(
+            token,
+            ResultMajor as string,
+            ResultMinor as string
+        );
         
         // The final redirect must go to the secure, public-facing HTTPS server.
         const redirectUrl = `https://localhost:8443/results?token=${token}`;

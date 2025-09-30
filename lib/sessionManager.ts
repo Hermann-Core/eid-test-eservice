@@ -78,6 +78,31 @@ class SessionManager {
         }
     }
 
+    async updateSessionWithClientResult(
+        token: string,
+        resultMajor?: string,
+        resultMinor?: string
+    ): Promise<boolean> {
+        try {
+            const session = await this.getSession(token);
+            if (!session) {
+                return false;
+            }
+
+            session.resultMajor = resultMajor;
+            session.resultMinor = resultMinor;
+            
+            const filePath = this.getSessionFilePath(token);
+            await fs.writeFile(filePath, JSON.stringify(session, null, 2));
+            
+            console.log(`Updated session with client result for token: ${token}`);
+            return true;
+        } catch (error) {
+            console.error(`Error updating session for token ${token}:`, error);
+            return false;
+        }
+    }
+
     async getSession(token: string): Promise<SessionData | undefined> {
         try {
             const filePath = this.getSessionFilePath(token);

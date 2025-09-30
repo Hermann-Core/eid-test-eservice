@@ -18,10 +18,23 @@ export default async function handler(
         }
 
         // Get session data
-        const session = sessionManager.getSession(token);
+        const session = await sessionManager.getSession(token);
 
         if (!session) {
             return res.status(404).json({ error: 'Session not found or expired' });
+        }
+
+        // Check if the eID-Client reported an error
+        if (session.resultMajor && session.resultMajor.includes('error')) {
+            console.log('eID-Client reported an error, not calling getResult.');
+            return res.status(200).json({
+                success: false,
+                result: {
+                    ResultMajor: session.resultMajor,
+                    ResultMinor: session.resultMinor,
+                    ResultMessage: 'eID-Client reported an error during the authentication process.',
+                },
+            });
         }
 
         // Get eID-Server URL

@@ -162,4 +162,6 @@ export interface SessionData {
     eCardServerAddress?: string;
     config: AuthenticationConfig;
     startTime: number;
+    resultMajor?: string;
+    resultMinor?: string;
 }
