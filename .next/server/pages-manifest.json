@@ -1,0 +1,11 @@
+{
+  "/_app": "pages/_app.js",
+  "/_error": "pages/_error.js",
+  "/_document": "pages/_document.js",
+  "/": "pages/index.js",
+  "/api/auth/start": "pages/api/auth/start.js",
+  "/api/refresh": "pages/api/refresh.js",
+  "/results": "pages/results.js",
+  "/api/auth/result": "pages/api/auth/result.js",
+  "/api/tctoken": "pages/api/tctoken.js"
+}

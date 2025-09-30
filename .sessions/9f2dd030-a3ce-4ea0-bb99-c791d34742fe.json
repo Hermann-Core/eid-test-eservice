@@ -1,0 +1,45 @@
+{
+  "sessionId": "59d8332a8b6dc75297ad061382f05cbd",
+  "pskId": "59d8332a8b6dc75297ad061382f05cbd",
+  "pskKey": "3ffb8aa002d844cca78e9265eeb4f6dfabbbc3a86826a7732a05d9d175a3878a",
+  "config": {
+    "operations": {
+      "DocumentType": "ALLOWED",
+      "IssuingState": "ALLOWED",
+      "DateOfExpiry": "REQUIRED",
+      "GivenNames": "ALLOWED",
+      "FamilyNames": "PROHIBITED",
+      "ArtisticName": "PROHIBITED",
+      "AcademicTitle": "PROHIBITED",
+      "DateOfBirth": "PROHIBITED",
+      "PlaceOfBirth": "PROHIBITED",
+      "Nationality": "PROHIBITED",
+      "BirthName": "PROHIBITED",
+      "PlaceOfResidence": "PROHIBITED",
+      "CommunityID": "PROHIBITED",
+      "ResidencePermitI": "PROHIBITED",
+      "RestrictedID": "PROHIBITED",
+      "AgeVerification": "PROHIBITED",
+      "PlaceVerification": "PROHIBITED"
+    },
+    "ageVerification": {
+      "enabled": false,
+      "age": 18
+    },
+    "placeVerification": {
+      "enabled": false,
+      "communityId": "027605"
+    },
+    "transactionAttestation": {
+      "enabled": false,
+      "format": "http://bsi.bund.de/eID/ExampleAttestationFormat",
+      "context": "id599456-df"
+    },
+    "transactionInfo": {
+      "enabled": false,
+      "info": "Test transaction information"
+    },
+    "eidTypeRequest": {}
+  },
+  "startTime": 1759251688218
+}
