@@ -189,26 +189,26 @@ export class SOAPClient {
         const useIDRequest = request['soapenv:Envelope']['soapenv:Body']['eid:useIDRequest'];
 
         // Add AgeVerification if enabled
-        if (config.ageVerification.enabled) {
+        if (config.ageVerification) {
             useIDRequest['eid:AgeVerificationRequest'] = {
                 'eid:Age': config.ageVerification.age,
             };
         }
 
         // Add PlaceVerification if enabled
-        if (config.placeVerification.enabled) {
+        if (config.placeVerification) {
             useIDRequest['eid:PlaceVerificationRequest'] = {
                 'eid:CommunityID': config.placeVerification.communityId,
             };
         }
 
         // Add TransactionInfo if enabled
-        if (config.transactionInfo.enabled) {
+        if (config.transactionInfo) {
             useIDRequest['eid:TransactionInfo'] = config.transactionInfo.info;
         }
 
         // Add TransactionAttestation if enabled
-        if (config.transactionAttestation.enabled) {
+        if (config.transactionAttestation) {
             useIDRequest['eid:TransactionAttestationRequest'] = {
                 'eid:TransactionAttestationFormat': config.transactionAttestation.format,
                 'eid:TransactionContext': config.transactionAttestation.context,

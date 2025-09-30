@@ -30,23 +30,19 @@ export interface OperationsRequest {
 }
 
 export interface AgeVerificationRequest {
-    enabled: boolean;
     age: number;
 }
 
 export interface PlaceVerificationRequest {
-    enabled: boolean;
     communityId: string;
 }
 
 export interface TransactionAttestationRequest {
-    enabled: boolean;
     format: string;
     context: string;
 }
 
 export interface TransactionInfo {
-    enabled: boolean;
     info: string;
 }
 
@@ -59,10 +55,10 @@ export interface EIDTypeRequest {
 
 export interface AuthenticationConfig {
     operations: OperationsRequest;
-    ageVerification: AgeVerificationRequest;
-    placeVerification: PlaceVerificationRequest;
-    transactionAttestation: TransactionAttestationRequest;
-    transactionInfo: TransactionInfo;
+    ageVerification?: AgeVerificationRequest;
+    placeVerification?: PlaceVerificationRequest;
+    transactionAttestation?: TransactionAttestationRequest;
+    transactionInfo?: TransactionInfo;
     levelOfAssurance?: LevelOfAssurance;
     eidTypeRequest: EIDTypeRequest;
 }
