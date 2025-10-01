@@ -78,6 +78,30 @@ class SessionManager {
         }
     }
 
+    async updateSession(
+        token: string,
+        dataToUpdate: Partial<SessionData>
+    ): Promise<boolean> {
+        try {
+            const session = await this.getSession(token);
+            if (!session) {
+                return false;
+            }
+
+            // Merge new data into the existing session
+            const updatedSession = { ...session, ...dataToUpdate };
+            
+            const filePath = this.getSessionFilePath(token);
+            await fs.writeFile(filePath, JSON.stringify(updatedSession, null, 2));
+            
+            console.log(`Updated session for token: ${token}`);
+            return true;
+        } catch (error) {
+            console.error(`Error updating session for token ${token}:`, error);
+            return false;
+        }
+    }
+
     async updateSessionWithClientResult(
         token: string,
         resultMajor?: string,
