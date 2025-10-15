@@ -1,8 +1,9 @@
 // pages/index.tsx
 
 import { useState } from "react";
+import { useRouter } from 'next/router';
 import { motion } from "framer-motion";
-import { Shield, CheckCircle2, Loader2, ChevronRight } from "lucide-react";
+import { Shield, CheckCircle2, Loader2, ChevronRight, Server } from "lucide-react";
 import type {
   AuthenticationConfig,
   OperationsRequest,
@@ -56,6 +57,7 @@ const getEidSelectColor = (value: EIDTypeSelection | "") => {
 };
 
 export default function Home() {
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -540,8 +542,17 @@ export default function Home() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
-          className="flex justify-center"
+          className="flex justify-center items-center gap-4"
         >
+          <button
+            onClick={() => router.push('/serverinfo')}
+            className="group relative px-6 py-3 bg-gradient-to-r from-gray-700 to-gray-800 text-white text-base font-semibold rounded-full shadow-lg hover:shadow-xl hover:from-gray-600 hover:to-gray-700 backdrop-blur-sm border border-white/20 transition-all duration-300 hover:scale-105 active:scale-95"
+          >
+            <span className="flex items-center gap-3">
+                <Server className="w-5 h-5" />
+                Get Server Info
+            </span>
+          </button>
           <button
             onClick={startAuthentication}
             disabled={loading}

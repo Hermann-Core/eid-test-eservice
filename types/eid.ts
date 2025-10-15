@@ -151,6 +151,18 @@ export interface GetResultResponse {
     };
 }
 
+export interface GetServerInfoResponse {
+    ServerVersion: {
+        VersionString: string;
+        Major: string;
+        Minor: string;
+        Bugfix: string;
+    };
+    DocumentVerificationRights: {
+        [key: string]: AttributeResponseType;
+    }
+}
+
 export interface SessionData {
     sessionId: string;
     pskId: string;

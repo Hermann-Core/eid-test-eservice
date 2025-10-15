@@ -5,7 +5,8 @@ import { XMLParser, XMLBuilder } from 'fast-xml-parser';
 import type {
     AuthenticationConfig,
     UseIDResponse,
-    GetResultResponse
+    GetResultResponse,
+    GetServerInfoResponse
 } from '@/types/eid';
 
 export class SOAPError extends Error {
@@ -379,6 +380,78 @@ export class SOAPClient {
                 throw error;
             }
             throw new Error(`Failed to call getResult: ${error.message}`);
+        }
+    }
+
+    private buildGetServerInfoRequest(): string {
+        const request = {
+            '?xml': {
+                '@_version': '1.0',
+                '@_encoding': 'UTF-8',
+            },
+            'soapenv:Envelope': {
+                '@_xmlns:soapenv': 'http://schemas.xmlsoap.org/soap/envelope/',
+                '@_xmlns:eid': 'http://bsi.bund.de/eID/',
+                'soapenv:Header': {},
+                'soapenv:Body': {
+                    'eid:getServerInfoRequest': {},
+                },
+            },
+        };
+
+        return this.builder.build(request);
+    }
+
+    async callGetServerInfo(): Promise<GetServerInfoResponse> {
+        const soapRequest = this.buildGetServerInfoRequest();
+
+        console.log('Sending getServerInfo request:', soapRequest);
+
+        try {
+            const response = await this.client.post(this.eidServerUrl, soapRequest);
+            const parsed = this.parser.parse(response.data);
+
+            console.log('Received getServerInfo response:', JSON.stringify(parsed, null, 2));
+
+            const getServerInfoResponse = parsed.Envelope?.Body?.getServerInfoResponse;
+            const soapBody = parsed.Envelope?.Body;
+
+            // Handle cases where the eID-Server returns a direct error in the SOAP body
+            if (!getServerInfoResponse && soapBody && soapBody.ResultMajor) {
+                console.warn('Received direct SOAP error from eID-Server');
+                throw new SOAPError(
+                    'eID-Server returned a direct error',
+                    soapBody.ResultMajor,
+                    soapBody.ResultMinor,
+                    soapBody.ResultMessage
+                );
+            }
+
+            if (!getServerInfoResponse) {
+                throw new Error('Invalid getServerInfo response structure');
+            }
+
+            // Filter out empty/null rights from the response
+            const rights = getServerInfoResponse.DocumentVerificationRights;
+            if (rights) {
+                Object.keys(rights).forEach(key => {
+                    if (rights[key] === null || rights[key] === '') {
+                        delete rights[key];
+                    }
+                });
+            }
+
+            return getServerInfoResponse as GetServerInfoResponse;
+        } catch (error: any) {
+            console.error('Error calling getServerInfo:', error.message);
+            if (error.response) {
+                console.error('Response data:', error.response.data);
+            }
+            // Re-throw custom SOAP errors
+            if (error instanceof SOAPError) {
+                throw error;
+            }
+            throw new Error(`Failed to call getServerInfo: ${error.message}`);
         }
     }
 }
