@@ -72,6 +72,8 @@ export default async function handler(
         res.status(500).json({
             error: 'Failed to get authentication result',
             message: error.message,
+            cause: error.cause,
+            description: error.description,
         });
     }
 }
