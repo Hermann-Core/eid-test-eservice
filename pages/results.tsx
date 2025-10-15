@@ -17,6 +17,7 @@ import {
   Terminal
 } from 'lucide-react';
 import type { GetResultResponse, PersonalData } from '@/types/eid';
+import { ICAOCountryCodes } from '@/lib/countryCodes';
 
 // Error code mapping according to eID-Client spec
 const ERROR_MAPPINGS = {
@@ -130,6 +131,11 @@ export default function Results() {
 
     fetchResult();
   }, [token]);
+
+  const getCountryName = (code?: string) => {
+    if (!code) return 'N/A';
+    return ICAOCountryCodes[code] || code;
+  };
 
   const formatDate = (dateStr?: string) => {
     if (!dateStr) return 'N/A';
@@ -441,7 +447,13 @@ export default function Results() {
                 />
               )}
               {personalData.Nationality && (
-                <DataField label="Nationality" value={personalData.Nationality} />
+                <DataField label="Nationality" value={getCountryName(personalData.Nationality)} />
+              )}
+              {personalData.CommunityID && (
+                <DataField label="Community ID" value={personalData.CommunityID} />
+              )}
+              {personalData.RestrictedID && (
+                <DataField label="Restricted ID" value={personalData.RestrictedID.ID} />
               )}
             </div>
           </motion.section>
@@ -467,7 +479,7 @@ export default function Results() {
                 <DataField label="Document Type" value={personalData.DocumentType} />
               )}
               {personalData.IssuingState && (
-                <DataField label="Issuing State" value={personalData.IssuingState} />
+                <DataField label="Issuing State" value={getCountryName(personalData.IssuingState)} />
               )}
               {personalData.DateOfExpiry && (
                 <DataField
@@ -508,7 +520,7 @@ export default function Results() {
                   />
                   <DataField
                     label="Country"
-                    value={personalData.PlaceOfResidence.StructuredPlace.Country}
+                    value={getCountryName(personalData.PlaceOfResidence.StructuredPlace.Country)}
                   />
                   <DataField
                     label="Zip Code"
