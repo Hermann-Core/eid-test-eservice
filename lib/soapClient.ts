@@ -341,7 +341,34 @@ export class SOAPClient {
                 throw new Error('Invalid getResult response structure');
             }
 
-            return getResultResponse as GetResultResponse;
+            // Manually construct the response to ensure only returned fields are included
+            const result: GetResultResponse = {
+                Result: getResultResponse.Result,
+            };
+
+            if (getResultResponse.PersonalData) {
+                result.PersonalData = getResultResponse.PersonalData;
+            }
+            if (getResultResponse.FulfilsAgeVerification) {
+                result.FulfilsAgeVerification = getResultResponse.FulfilsAgeVerification;
+            }
+            if (getResultResponse.FulfilsPlaceVerification) {
+                result.FulfilsPlaceVerification = getResultResponse.FulfilsPlaceVerification;
+            }
+            if (getResultResponse.OperationsAllowedByUser) {
+                result.OperationsAllowedByUser = getResultResponse.OperationsAllowedByUser;
+            }
+            if (getResultResponse.TransactionAttestationResponse) {
+                result.TransactionAttestationResponse = getResultResponse.TransactionAttestationResponse;
+            }
+            if (getResultResponse.LevelOfAssuranceResult) {
+                result.LevelOfAssuranceResult = getResultResponse.LevelOfAssuranceResult;
+            }
+            if (getResultResponse.EIDTypeResponse) {
+                result.EIDTypeResponse = getResultResponse.EIDTypeResponse;
+            }
+
+            return result;
         } catch (error: any) {
             console.error('Error calling getResult:', error.message);
             if (error.response) {

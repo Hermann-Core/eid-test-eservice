@@ -350,7 +350,7 @@ export default function Results() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
       {/* Header */}
-      <header className="py-8 px-6 border-b border-gray-200">
+      <header className="py-6 px-6 border-b border-gray-200">
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -359,38 +359,38 @@ export default function Results() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               {success ? (
-                <CheckCircle2 className="w-10 h-10 text-green-600" />
+                <CheckCircle2 className="w-8 h-8 text-green-600" />
               ) : (
-                <XCircle className="w-10 h-10 text-red-600" />
+                <XCircle className="w-8 h-8 text-red-600" />
               )}
               <div>
-                <h1 className="text-4xl font-semibold text-gray-900">
+                <h1 className="text-3xl font-semibold text-gray-900">
                   Authentication {success ? 'Successful' : 'Failed'}
                 </h1>
               </div>
             </div>
             <button
               onClick={() => router.push('/')}
-              className="flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-full text-gray-700 font-medium transition-colors"
+              className="flex items-center gap-2 px-3 py-1.5 bg-gray-100 hover:bg-gray-200 rounded-full text-gray-700 font-medium text-sm transition-colors"
             >
-              <HomeIcon className="w-5 h-5" />
+              <HomeIcon className="w-4 h-4" />
               New Request
             </button>
           </div>
         </motion.div>
       </header>
 
-      <main className="max-w-6xl mx-auto px-6 py-12">
+      <main className="max-w-6xl mx-auto px-6 py-8">
         {/* Error Details - Show when authentication fails */}
         {!success && result && (
           <motion.section
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="mb-8 bg-white rounded-3xl shadow-sm border border-red-200 p-8"
+            className="mb-6 bg-white rounded-2xl shadow-sm border border-red-200 p-6"
           >
-            <div className="flex items-center gap-3 mb-6">
-              <AlertCircle className="w-6 h-6 text-red-600" />
-              <h2 className="text-2xl font-semibold text-gray-900">
+            <div className="flex items-center gap-3 mb-4">
+              <AlertCircle className="w-5 h-5 text-red-600" />
+              <h2 className="text-xl font-semibold text-gray-900">
                 Error Details
               </h2>
             </div>
@@ -464,11 +464,11 @@ export default function Results() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="mb-8 bg-white rounded-3xl shadow-sm border border-gray-200 p-8"
+            className="mb-6 bg-white rounded-2xl shadow-sm border border-gray-200 p-6"
           >
-            <div className="flex items-center gap-3 mb-6">
-              <User className="w-6 h-6 text-blue-600" />
-              <h2 className="text-2xl font-semibold text-gray-900">
+            <div className="flex items-center gap-3 mb-4">
+              <User className="w-5 h-5 text-blue-600" />
+              <h2 className="text-xl font-semibold text-gray-900">
                 Personal Information
               </h2>
             </div>
@@ -526,11 +526,11 @@ export default function Results() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="mb-8 bg-white rounded-3xl shadow-sm border border-gray-200 p-8"
+            className="mb-6 bg-white rounded-2xl shadow-sm border border-gray-200 p-6"
           >
-            <div className="flex items-center gap-3 mb-6">
-              <FileText className="w-6 h-6 text-purple-600" />
-              <h2 className="text-2xl font-semibold text-gray-900">
+            <div className="flex items-center gap-3 mb-4">
+              <FileText className="w-5 h-5 text-purple-600" />
+              <h2 className="text-xl font-semibold text-gray-900">
                 Document Information
               </h2>
             </div>
@@ -559,11 +559,11 @@ export default function Results() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="mb-8 bg-white rounded-3xl shadow-sm border border-gray-200 p-8"
+            className="mb-6 bg-white rounded-2xl shadow-sm border border-gray-200 p-6"
           >
-            <div className="flex items-center gap-3 mb-6">
-              <HomeIcon className="w-6 h-6 text-green-600" />
-              <h2 className="text-2xl font-semibold text-gray-900">
+            <div className="flex items-center gap-3 mb-4">
+              <HomeIcon className="w-5 h-5 text-green-600" />
+              <h2 className="text-xl font-semibold text-gray-900">
                 Residence Information
               </h2>
             </div>
@@ -605,11 +605,11 @@ export default function Results() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
-            className="mb-8 bg-white rounded-3xl shadow-sm border border-gray-200 p-8"
+            className="mb-6 bg-white rounded-2xl shadow-sm border border-gray-200 p-6"
           >
-            <div className="flex items-center gap-3 mb-6">
-              <Shield className="w-6 h-6 text-orange-600" />
-              <h2 className="text-2xl font-semibold text-gray-900">
+            <div className="flex items-center gap-3 mb-4">
+              <Shield className="w-5 h-5 text-orange-600" />
+              <h2 className="text-xl font-semibold text-gray-900">
                 Verification Results
               </h2>
             </div>
@@ -639,11 +639,11 @@ export default function Results() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5 }}
-            className="mb-8 bg-white rounded-3xl shadow-sm border border-gray-200 p-8"
+            className="mb-6 bg-white rounded-2xl shadow-sm border border-gray-200 p-6"
           >
-            <div className="flex items-center gap-3 mb-6">
-              <AlertCircle className="w-6 h-6 text-blue-600" />
-              <h2 className="text-2xl font-semibold text-gray-900">
+            <div className="flex items-center gap-3 mb-4">
+              <AlertCircle className="w-5 h-5 text-blue-600" />
+              <h2 className="text-xl font-semibold text-gray-900">
                 Operations Allowed by User
               </h2>
             </div>
@@ -667,11 +667,11 @@ export default function Results() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6 }}
-            className="mb-8 bg-white rounded-3xl shadow-sm border border-gray-200 p-8"
+            className="mb-6 bg-white rounded-2xl shadow-sm border border-gray-200 p-6"
           >
-            <div className="flex items-center gap-3 mb-6">
-              <FileText className="w-6 h-6 text-purple-600" />
-              <h2 className="text-2xl font-semibold text-gray-900">
+            <div className="flex items-center gap-3 mb-4">
+              <FileText className="w-5 h-5 text-purple-600" />
+              <h2 className="text-xl font-semibold text-gray-900">
                 Additional Information
               </h2>
             </div>
@@ -711,12 +711,12 @@ function DataField({ label, value, icon }: DataFieldProps) {
   if (!value) return null;
 
   return (
-    <div className="p-4 rounded-lg bg-gray-50">
+    <div className="p-3 rounded-lg bg-gray-50">
       <div className="flex items-center gap-2 mb-1">
         {icon}
-        <span className="text-sm font-medium text-gray-600">{label}</span>
+        <span className="text-xs font-medium text-gray-600">{label}</span>
       </div>
-      <p className="text-lg font-semibold text-gray-900">{value}</p>
+      <p className="text-base font-semibold text-gray-900">{value}</p>
     </div>
   );
 }
@@ -729,18 +729,18 @@ interface VerificationFieldProps {
 
 function VerificationField({ label, fulfilled, icon }: VerificationFieldProps) {
   return (
-    <div className="p-4 rounded-lg bg-gray-50">
-      <div className="flex items-center gap-2 mb-2">
+    <div className="p-3 rounded-lg bg-gray-50">
+      <div className="flex items-center gap-2 mb-1.5">
         {icon}
-        <span className="text-sm font-medium text-gray-600">{label}</span>
+        <span className="text-xs font-medium text-gray-600">{label}</span>
       </div>
       <div className="flex items-center gap-2">
         {fulfilled ? (
-          <CheckCircle2 className="w-5 h-5 text-green-600" />
+          <CheckCircle2 className="w-4 h-4 text-green-600" />
         ) : (
-          <XCircle className="w-5 h-5 text-red-600" />
+          <XCircle className="w-4 h-4 text-red-600" />
         )}
-        <span className={`font-semibold ${fulfilled ? 'text-green-900' : 'text-red-900'}`}>
+        <span className={`text-sm font-semibold ${fulfilled ? 'text-green-900' : 'text-red-900'}`}>
           {fulfilled ? 'Fulfilled' : 'Not Fulfilled'}
         </span>
       </div>
