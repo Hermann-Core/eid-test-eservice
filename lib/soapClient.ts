@@ -8,6 +8,20 @@ import type {
     GetResultResponse
 } from '@/types/eid';
 
+export class SOAPError extends Error {
+    public resultMajor?: string;
+    public resultMinor?: string;
+    public resultMessage?: string;
+
+    constructor(message: string, resultMajor?: string, resultMinor?: string, resultMessage?: string) {
+        super(message);
+        this.name = 'SOAPError';
+        this.resultMajor = resultMajor;
+        this.resultMinor = resultMinor;
+        this.resultMessage = resultMessage;
+    }
+}
+
 export class SOAPClient {
     private client: AxiosInstance;
     private parser: XMLParser;
@@ -309,6 +323,18 @@ export class SOAPClient {
             console.log('Received getResult response:', JSON.stringify(parsed, null, 2));
 
             const getResultResponse = parsed.Envelope?.Body?.getResultResponse;
+            const soapBody = parsed.Envelope?.Body;
+
+            // Handle cases where the eID-Server returns a direct error in the SOAP body
+            if (!getResultResponse && soapBody && soapBody.ResultMajor) {
+                console.warn('Received direct SOAP error from eID-Server');
+                throw new SOAPError(
+                    'eID-Server returned a direct error',
+                    soapBody.ResultMajor,
+                    soapBody.ResultMinor,
+                    soapBody.ResultMessage
+                );
+            }
 
             if (!getResultResponse) {
                 throw new Error('Invalid getResult response structure');
@@ -319,6 +345,10 @@ export class SOAPClient {
             console.error('Error calling getResult:', error.message);
             if (error.response) {
                 console.error('Response data:', error.response.data);
+            }
+            // Re-throw custom SOAP errors
+            if (error instanceof SOAPError) {
+                throw error;
             }
             throw new Error(`Failed to call getResult: ${error.message}`);
         }

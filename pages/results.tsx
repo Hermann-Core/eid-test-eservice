@@ -242,20 +242,39 @@ export default function Results() {
               {/* Error Type Information */}
               {(() => {
                 const errorInfo = getErrorInfo(resultData.result.ResultMinor);
-                if (!errorInfo) return null;
-                
-                const IconComponent = errorInfo.icon === 'Shield' ? Shield :
-                                    errorInfo.icon === 'UserX' ? UserX :
-                                    errorInfo.icon === 'Server' ? Server :
-                                    errorInfo.icon === 'Terminal' ? Terminal : AlertCircle;
-                
-                return (
-                  <div className={`p-4 rounded-lg ${errorInfo.bgColor} border-l-4 border-red-400`}>
-                    <div className="flex items-center gap-3 mb-2">
-                      <IconComponent className={`w-6 h-6 ${errorInfo.color}`} />
-                      <h3 className="text-lg font-semibold text-gray-900">{errorInfo.title}</h3>
+                const minorFragment = resultData.result.ResultMinor?.split('#').pop();
+
+                if (errorInfo) {
+                  const IconComponent = errorInfo.icon === 'Shield' ? Shield :
+                                      errorInfo.icon === 'UserX' ? UserX :
+                                      errorInfo.icon === 'Server' ? Server :
+                                      errorInfo.icon === 'Terminal' ? Terminal : AlertCircle;
+                  return (
+                    <div className={`p-4 rounded-lg ${errorInfo.bgColor} border-l-4 border-red-400`}>
+                      <div className="flex items-center gap-3 mb-2">
+                        <IconComponent className={`w-6 h-6 ${errorInfo.color}`} />
+                        <h3 className="text-lg font-semibold text-gray-900">{errorInfo.title}</h3>
+                      </div>
+                      <p className="text-gray-700">{errorInfo.description}</p>
                     </div>
-                    <p className="text-gray-700">{errorInfo.description}</p>
+                  );
+                }
+
+                // Render enriched context for direct eID-Server errors
+                return (
+                  <div className="p-4 rounded-lg bg-red-50 border-l-4 border-red-400">
+                    <div className="flex items-center gap-3 mb-2">
+                      <Server className="w-6 h-6 text-red-600" />
+                      <h3 className="text-lg font-semibold text-gray-900">eID-Server Error</h3>
+                    </div>
+                    {resultData.result.ResultMessage && <p className="text-gray-700">{resultData.result.ResultMessage}</p>}
+                    {minorFragment && (
+                      <div className="mt-2">
+                        <span className="text-xs font-semibold bg-red-200 text-red-800 px-2 py-1 rounded">
+                          {minorFragment}
+                        </span>
+                      </div>
+                    )}
                   </div>
                 );
               })()}
@@ -264,7 +283,6 @@ export default function Results() {
               <div className="bg-gray-50 rounded-lg p-4">
                 <h4 className="text-sm font-semibold text-gray-700 mb-2">Technical Details</h4>
                 <div className="space-y-1 text-sm">
-                  <div><span className="font-medium">Result Major:</span> <span className="font-mono">{resultData.result.ResultMajor}</span></div>
                   {resultData.result.ResultMinor && (
                     <div><span className="font-medium">Result Minor:</span> <span className="font-mono">{resultData.result.ResultMinor}</span></div>
                   )}
@@ -319,9 +337,9 @@ export default function Results() {
                 <h1 className="text-4xl font-semibold text-gray-900">
                   Authentication {success ? 'Successful' : 'Failed'}
                 </h1>
-                {!success && (
+                {!success && result.ResultMessage && (
                   <p className="text-sm text-gray-600 mt-1">
-                    {result.ResultMajor}
+                    {result.ResultMessage}
                   </p>
                 )}
               </div>
@@ -356,20 +374,39 @@ export default function Results() {
               {/* Error Type Information */}
               {(() => {
                 const errorInfo = getErrorInfo(result.ResultMinor);
-                if (!errorInfo) return null;
-                
-                const IconComponent = errorInfo.icon === 'Shield' ? Shield :
-                                    errorInfo.icon === 'UserX' ? UserX :
-                                    errorInfo.icon === 'Server' ? Server :
-                                    errorInfo.icon === 'Terminal' ? Terminal : AlertCircle;
-                
-                return (
-                  <div className={`p-4 rounded-lg ${errorInfo.bgColor} border-l-4 border-red-400`}>
-                    <div className="flex items-center gap-3 mb-2">
-                      <IconComponent className={`w-6 h-6 ${errorInfo.color}`} />
-                      <h3 className="text-lg font-semibold text-gray-900">{errorInfo.title}</h3>
+                const minorFragment = result.ResultMinor?.split('#').pop();
+
+                if (errorInfo) {
+                  const IconComponent = errorInfo.icon === 'Shield' ? Shield :
+                                      errorInfo.icon === 'UserX' ? UserX :
+                                      errorInfo.icon === 'Server' ? Server :
+                                      errorInfo.icon === 'Terminal' ? Terminal : AlertCircle;
+                  return (
+                    <div className={`p-4 rounded-lg ${errorInfo.bgColor} border-l-4 border-red-400`}>
+                      <div className="flex items-center gap-3 mb-2">
+                        <IconComponent className={`w-6 h-6 ${errorInfo.color}`} />
+                        <h3 className="text-lg font-semibold text-gray-900">{errorInfo.title}</h3>
+                      </div>
+                      <p className="text-gray-700">{errorInfo.description}</p>
                     </div>
-                    <p className="text-gray-700">{errorInfo.description}</p>
+                  );
+                }
+
+                // Render enriched context for direct eID-Server errors
+                return (
+                  <div className="p-4 rounded-lg bg-red-50 border-l-4 border-red-400">
+                    <div className="flex items-center gap-3 mb-2">
+                      <Server className="w-6 h-6 text-red-600" />
+                      <h3 className="text-lg font-semibold text-gray-900">eID-Server Error</h3>
+                    </div>
+                    {result.ResultMessage && <p className="text-gray-700">{result.ResultMessage}</p>}
+                    {minorFragment && (
+                      <div className="mt-2">
+                        <span className="text-xs font-semibold bg-red-200 text-red-800 px-2 py-1 rounded">
+                          {minorFragment}
+                        </span>
+                      </div>
+                    )}
                   </div>
                 );
               })()}
@@ -378,7 +415,6 @@ export default function Results() {
               <div className="bg-gray-50 rounded-lg p-4">
                 <h4 className="text-sm font-semibold text-gray-700 mb-2">Technical Details</h4>
                 <div className="space-y-1 text-sm">
-                  <div><span className="font-medium">Result Major:</span> <span className="font-mono">{result.ResultMajor}</span></div>
                   {result.ResultMinor && (
                     <div><span className="font-medium">Result Minor:</span> <span className="font-mono">{result.ResultMinor}</span></div>
                   )}

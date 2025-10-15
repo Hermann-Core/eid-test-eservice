@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { SOAPClient } from '@/lib/soapClient';
+import { SOAPClient, SOAPError } from '@/lib/soapClient';
 import { sessionManager } from '@/lib/sessionManager';
 
 export default async function handler(
@@ -69,6 +69,19 @@ export default async function handler(
         // sessionManager.deleteSession(token); // Optional: keep for multiple checks
     } catch (error: any) {
         console.error('Error getting result:', error);
+
+        // Handle custom SOAP errors
+        if (error instanceof SOAPError) {
+            return res.status(200).json({
+                success: false,
+                result: {
+                    ResultMajor: error.resultMajor,
+                    ResultMinor: error.resultMinor,
+                    ResultMessage: error.resultMessage,
+                },
+            });
+        }
+
         res.status(500).json({
             error: 'Failed to get authentication result',
             message: error.message,
