@@ -139,15 +139,33 @@ export default function Results() {
 
   const formatDate = (dateStr?: string) => {
     if (!dateStr) return 'N/A';
-    try {
-      return new Date(dateStr).toLocaleDateString('en-GB', {
-        day: '2-digit',
-        month: '2-digit',
-        year: 'numeric',
-      });
-    } catch {
-      return dateStr;
+  
+    // Handle YYYY-MM-DD format
+    if (/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) {
+      try {
+        return new Date(dateStr).toLocaleDateString('en-GB', {
+          day: '2-digit',
+          month: '2-digit',
+          year: 'numeric',
+        });
+      } catch {
+        return dateStr;
+      }
     }
+  
+    // Handle YYYYMMDD format
+    if (/^\d{8}$/.test(dateStr)) {
+      try {
+        const year = dateStr.substring(0, 4);
+        const month = dateStr.substring(4, 6);
+        const day = dateStr.substring(6, 8);
+        return `${day}/${month}/${year}`;
+      } catch {
+        return dateStr;
+      }
+    }
+  
+    return dateStr;
   };
 
   const getErrorInfo = (resultMinor?: string) => {
@@ -175,7 +193,7 @@ export default function Results() {
     const badges = {
       ALLOWED: { bg: 'bg-green-100', text: 'text-green-800', label: 'Allowed' },
       PROHIBITED: { bg: 'bg-red-100', text: 'text-red-800', label: 'Prohibited' },
-      NOTONCHIP: { bg: 'bg-gray-100', text: 'text-gray-800', label: 'Not on Chip' },
+      NOTONCHIP: { bg: 'bg-orange-100', text: 'text-orange-800', label: 'Not on Chip' },
     };
     
     const badge = badges[status as keyof typeof badges] || badges.PROHIBITED;
@@ -185,6 +203,18 @@ export default function Results() {
         {badge.label}
       </span>
     );
+  };
+
+  const getLevelOfAssuranceName = (loa: string) => {
+    const mapping: { [key: string]: string } = {
+      'http://eidas.europa.eu/LoA/low': 'eIDAS Low',
+      'http://eidas.europa.eu/LoA/substantial': 'eIDAS Substantial',
+      'http://eidas.europa.eu/LoA/high': 'eIDAS High',
+      'http://bsi.bund.de/eID/LoA/normal': 'BSI Normal',
+      'http://bsi.bund.de/eID/LoA/substantiell': 'BSI Substantiell',
+      'http://bsi.bund.de/eID/LoA/hoch': 'BSI Hoch',
+    };
+    return mapping[loa] || loa;
   };
 
   if (loading) {
@@ -337,11 +367,6 @@ export default function Results() {
                 <h1 className="text-4xl font-semibold text-gray-900">
                   Authentication {success ? 'Successful' : 'Failed'}
                 </h1>
-                {!success && result.ResultMessage && (
-                  <p className="text-sm text-gray-600 mt-1">
-                    {result.ResultMessage}
-                  </p>
-                )}
               </div>
             </div>
             <button
@@ -448,7 +473,7 @@ export default function Results() {
               </h2>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {personalData.GivenNames && (
                 <DataField label="Given Names" value={personalData.GivenNames} />
               )}
@@ -467,7 +492,7 @@ export default function Results() {
               {personalData.DateOfBirth && (
                 <DataField 
                   label="Date of Birth" 
-                  value={personalData.DateOfBirth.DateValue || personalData.DateOfBirth.DateString}
+                  value={formatDate(personalData.DateOfBirth.DateValue || personalData.DateOfBirth.DateString)}
                   icon={<Calendar className="w-5 h-5 text-gray-400" />}
                 />
               )}
@@ -510,7 +535,7 @@ export default function Results() {
               </h2>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {personalData.DocumentType && (
                 <DataField label="Document Type" value={personalData.DocumentType} />
               )}
@@ -543,7 +568,7 @@ export default function Results() {
               </h2>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {personalData.PlaceOfResidence.StructuredPlace && (
                 <>
                   <DataField
@@ -589,7 +614,7 @@ export default function Results() {
               </h2>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {ageVerification && (
                 <VerificationField
                   label="Age Verification"
@@ -623,7 +648,7 @@ export default function Results() {
               </h2>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {Object.entries(operationsAllowed).map(([key, status]) => (
                 <div key={key} className="flex items-center justify-between p-3 rounded-lg bg-gray-50">
                   <span className="text-sm font-medium text-gray-700">
@@ -651,9 +676,9 @@ export default function Results() {
               </h2>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {levelOfAssurance && (
-                <DataField label="Level of Assurance" value={levelOfAssurance} />
+                <DataField label="Level of Assurance" value={getLevelOfAssuranceName(levelOfAssurance)} />
               )}
               {eidType && (
                 <DataField

@@ -165,6 +165,7 @@ export class SOAPClient {
         this.parser = new XMLParser({
             ignoreAttributes: false,
             removeNSPrefix: true,
+            parseTagValue: false, // Prevents auto-conversion of string numbers like CommunityID
         });
 
         this.builder = new XMLBuilder({
